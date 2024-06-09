@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://boqx25wihpb8w"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_g8qbw"]
+[ext_resource type="Script" path="res://Scripts/Player/player_state_machine.gd" id="2_m0mc5"]
+[ext_resource type="Script" path="res://Scripts/Player/States/idle.gd" id="3_2hn0b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_651q5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1eten"]
+size = Vector2(1, 1)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_g8qbw")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(5, -5)
+scale = Vector2(10, 10)
+mesh = SubResource("BoxMesh_651q5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, -5)
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_1eten")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2_m0mc5")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("3_2hn0b")

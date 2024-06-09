@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://boqx25wihpb8w"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_g8qbw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_651q5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1eten"]
+size = Vector2(1, 1)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_g8qbw")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(8, -8)
+scale = Vector2(16, 16)
+mesh = SubResource("BoxMesh_651q5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, -8)
+scale = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_1eten")
+
+[node name="JumpBufferTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
