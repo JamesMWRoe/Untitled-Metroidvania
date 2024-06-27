@@ -1,6 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://boqx25wihpb8w"]
+[gd_scene load_steps=12 format=3 uid="uid://boqx25wihpb8w"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_g8qbw"]
+[ext_resource type="Script" path="res://Scripts/Player/StateMachine.gd" id="2_kv53d"]
+[ext_resource type="Script" path="res://Scripts/Player/States/idle.gd" id="3_5tdr4"]
+[ext_resource type="Script" path="res://Scripts/Player/States/move.gd" id="4_v3d45"]
+[ext_resource type="Script" path="res://Scripts/Player/States/jump.gd" id="5_1ih41"]
+[ext_resource type="Script" path="res://Scripts/Player/States/fall.gd" id="6_0pohs"]
+[ext_resource type="Script" path="res://Scripts/Player/States/grapple.gd" id="7_viidy"]
+[ext_resource type="Script" path="res://Scripts/Player/States/wall_slide.gd" id="8_np4u6"]
+[ext_resource type="Script" path="res://Scripts/Player/States/wall_jump.gd" id="9_agm6g"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_651q5"]
 
@@ -11,17 +19,50 @@ size = Vector2(1, 1)
 script = ExtResource("1_g8qbw")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
-position = Vector2(8, -8)
 scale = Vector2(16, 16)
 mesh = SubResource("BoxMesh_651q5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, -8)
 scale = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_1eten")
 
 [node name="JumpBufferTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.2
 one_shot = true
 
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_kv53d")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("move", "jump", "fall")]
+script = ExtResource("3_5tdr4")
+move = NodePath("../Move")
+jump = NodePath("../Jump")
+fall = NodePath("../Fall")
+
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle", "jump")]
+script = ExtResource("4_v3d45")
+idle = NodePath("../Idle")
+jump = NodePath("../Jump")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("5_1ih41")
+
+[node name="Fall" type="Node" parent="StateMachine"]
+script = ExtResource("6_0pohs")
+
+[node name="Grapple" type="Node" parent="StateMachine"]
+script = ExtResource("7_viidy")
+
+[node name="WallSlide" type="Node" parent="StateMachine"]
+script = ExtResource("8_np4u6")
+
+[node name="WallJump" type="Node" parent="StateMachine"]
+script = ExtResource("9_agm6g")
+
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
+[connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]

@@ -17,14 +17,18 @@ func _ready() -> void:
 	length_of_pendulum = vector_from_centre.length()
 	
 	print(length_of_pendulum)
-	angular_velocity = 100 / (length_of_pendulum)
-	gravity = 2/length_of_pendulum
+	angular_velocity = 4
+	gravity = 9.81
+	
 
 func _physics_process(delta) -> void:
 	vector_from_centre = pendulum_centre.position - position
 	angle_to_centre = atan2(vector_from_centre.x, -vector_from_centre.y)
 	
-	var angular_acceleration = -gravity * sin(angle_to_centre)
+	var angular_acceleration = -gravity * delta * sin(angle_to_centre)
+	#if sign(angle_to_centre) != sign(angular_velocity):
+		#angular_acceleration *= 0.9
+	
 	
 	angular_velocity += angular_acceleration
 	
@@ -36,19 +40,23 @@ func _physics_process(delta) -> void:
 	if not previous_expected_position:
 		previous_expected_position = expected_new_position
 	
+	
 	velocity.x = current_velocity.x
 	velocity.y = current_velocity.y
 	
-	#print(rad_to_deg(angle_to_centre))
-	#print(rad_to_deg(angle_next_frame))
-	#print(angular_acceleration)
-	#print(angular_velocity)
-	#print()
+	#if abs(angular_velocity) < 0.01:
+		#print('max angle: ')
+		#print(rad_to_deg(angle_to_centre))
+		#print('max angular acceleration: ')
+		#print(angular_acceleration)
+		#print()
 	#
-	#print(previous_expected_position)
-	#print(vector_from_centre)
-	#print(expected_new_position)
-	#print()
-	#print()
-	previous_expected_position = expected_new_position
+	#if abs(angular_acceleration) < 0.001:
+		#print('max angular velocity: ')
+		#print(angular_velocity)
+		#print('max velocity: ')
+		#print(abs(current_velocity.length()))
+		#print()
+	
+	
 	move_and_slide()

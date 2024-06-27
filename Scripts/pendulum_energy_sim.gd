@@ -57,16 +57,16 @@ func _physics_process(delta):
 	
 	current_velocity = direction_of_pendulum * vector_tangent_to_pendulum * current_speed
 	
-	print(rad_to_deg(angle_between_weight_and_centre))
-	print(vector_tangent_to_pendulum)
-	print()
-	
-	print(current_kinetic_energy)
-	print(current_potential_energy)
-	print(energy_in_system)
-	print(current_velocity)
-	print()
-	print()
+	#print(rad_to_deg(angle_between_weight_and_centre))
+	#print(vector_tangent_to_pendulum)
+	#print()
+	#
+	#print(current_kinetic_energy)
+	#print(current_potential_energy)
+	#print(energy_in_system)
+	#print(current_velocity)
+	#print()
+	#print()
 	
 	
 	velocity = current_velocity
