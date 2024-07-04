@@ -1,14 +1,15 @@
-extends State
+extends AerialState
 
 @export
-var idle: State
+var wall_slide: State
+
+var direction
 
 func physics_update(delta):
-	context.velocity.y += context.GRAVITY
+	super.physics_update(delta)
 	
-	if Input.is_action_just_pressed("jump"):
-		context.buffer_jump()
-
-func _check_for_transition() -> void:
-	if context.is_on_floor():
-		state_machine.transition_to_state(idle)
+	direction = Input.get_axis("move_left", "move_right")
+	context.velocity.x = direction * context.MAX_RUN_SPEED
+	
+	if context.is_on_wall():
+		state_machine.transition_to_state(wall_slide)

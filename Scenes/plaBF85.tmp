@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://boqx25wihpb8w"]
+[gd_scene load_steps=12 format=3 uid="uid://boqx25wihpb8w"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_g8qbw"]
 [ext_resource type="Script" path="res://Scripts/Player/StateMachine.gd" id="2_kv53d"]
@@ -9,15 +9,11 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/grapple.gd" id="7_viidy"]
 [ext_resource type="Script" path="res://Scripts/Player/States/wall_slide.gd" id="8_np4u6"]
 [ext_resource type="Script" path="res://Scripts/Player/States/wall_jump.gd" id="9_agm6g"]
-[ext_resource type="Script" path="res://Scripts/Player/grapple_detector.gd" id="10_ujae6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_651q5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1eten"]
 size = Vector2(1, 1)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_mbx3b"]
-radius = 102.005
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g8qbw")
@@ -54,15 +50,16 @@ idle = NodePath("../Idle")
 jump = NodePath("../Jump")
 fall = NodePath("../Fall")
 
-[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle")]
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "wall_slide")]
 script = ExtResource("5_1ih41")
 fall = NodePath("../Fall")
 idle = NodePath("../Idle")
-
-[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("wall_slide", "idle")]
-script = ExtResource("6_0pohs")
 wall_slide = NodePath("../WallSlide")
+
+[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle", "wall_slide")]
+script = ExtResource("6_0pohs")
 idle = NodePath("../Idle")
+wall_slide = NodePath("../WallSlide")
 
 [node name="Grapple" type="Node" parent="StateMachine"]
 script = ExtResource("7_viidy")
@@ -72,22 +69,11 @@ script = ExtResource("8_np4u6")
 wall_jump = NodePath("../WallJump")
 fall = NodePath("../Fall")
 
-[node name="WallJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle")]
+[node name="WallJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "wall_slide")]
 script = ExtResource("9_agm6g")
 fall = NodePath("../Fall")
 idle = NodePath("../Idle")
-
-[node name="WallJumpTimer" type="Timer" parent="StateMachine/WallJump"]
-wait_time = 0.2
-one_shot = true
-
-[node name="GrappleDetector" type="Area2D" parent="."]
-script = ExtResource("10_ujae6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GrappleDetector"]
-shape = SubResource("CircleShape2D_mbx3b")
+wall_slide = NodePath("../WallSlide")
 
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
-[connection signal="timeout" from="StateMachine/WallJump/WallJumpTimer" to="StateMachine/WallJump" method="_on_wall_jump_timer_timeout"]
-[connection signal="area_entered" from="GrappleDetector" to="GrappleDetector" method="_on_area_entered"]

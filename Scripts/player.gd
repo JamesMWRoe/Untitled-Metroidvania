@@ -5,6 +5,8 @@ class_name Player
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var state_machine: StateMachine = $StateMachine
 
+@onready var grapple_point_detector = $GrappleDetector
+
 const TILE_UNIT = 16
 
 const MAX_RUN_SPEED = 4 * TILE_UNIT
@@ -19,7 +21,7 @@ const ACCELERATION = 4 * TILE_UNIT
 var is_jump_buffered = false
 var is_within_coyote_time = false
 
-@export var current_grapple_point: Node2D
+var current_grapple_point: GrapplePoint
 var is_grapple_setup: bool = false
 var is_grappling: bool = false
 
@@ -33,29 +35,9 @@ var grapple_limiting_factor: float = 0.1
 
 func _ready():
 	state_machine.init(self)
+	grapple_point_detector.grapple_point_found.connect(set_grapple_point)
 
 func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += GRAVITY * delta
-	
-	if is_on_floor():
-		coyote_timer.start()
-		is_within_coyote_time = true
-	
-	
-	# Handle jump.
-
-	
-	if is_jump_buffered and is_within_coyote_time:
-		is_jump_buffered = false
-		is_within_coyote_time = false
-		velocity.y = JUMP_VELOCITY
-	
-	
-	
-	if Input.is_action_just_released("jump") and velocity.y < 0:
-		velocity.y /= 3
 	
 	var direction = Input.get_axis("move_left", "move_right")
 	
@@ -111,11 +93,17 @@ func _physics_process(delta):
 		
 		velocity = current_velocity
 	
+	print(velocity)
+	
 	move_and_slide()
 
 func buffer_jump() -> void:
 	jump_buffer_timer.start()
 	is_jump_buffered = true
+
+func reset_coyote_time() -> void:
+	coyote_timer.start()
+	is_within_coyote_time = true
 
 func set_grapple_point(grapple_point):
 	current_grapple_point = grapple_point
