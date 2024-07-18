@@ -1,11 +1,13 @@
 extends CharacterBody2D
 class_name Player
 
-@onready var jump_buffer_timer: Timer = $JumpBufferTimer
-@onready var coyote_timer: Timer = $CoyoteTimer
+@onready var jump_buffer_timer: Timer = $Timers/JumpBufferTimer
+@onready var coyote_timer: Timer = $Timers/CoyoteTimer
+@onready var grapple_buffer_timer: Timer = $Timers/GrappleBufferTimer
 @onready var state_machine: StateMachine = $StateMachine
 
 @onready var grapple_point_detector = $GrappleDetector
+@onready var grapple_line = $GrappleLine
 
 const TILE_UNIT = 16
 
@@ -14,6 +16,8 @@ const MAX_GRAPPLE_SPEED = 12 * TILE_UNIT
 const JUMP_HEIGHT = 2.5 * TILE_UNIT
 const JUMP_DISTANCE = 2 * TILE_UNIT
 
+const MAX_GRAPPLE_LENGTH = 65
+
 const JUMP_VELOCITY = -2 * JUMP_HEIGHT * MAX_RUN_SPEED / JUMP_DISTANCE
 const GRAVITY = 2 * JUMP_HEIGHT * (MAX_RUN_SPEED*MAX_RUN_SPEED) / (JUMP_DISTANCE*JUMP_DISTANCE)
 const ACCELERATION = 4 * TILE_UNIT
@@ -21,85 +25,31 @@ const ACCELERATION = 4 * TILE_UNIT
 var is_jump_buffered = false
 var is_within_coyote_time = false
 
+var is_grapple_buffered = false
+
 var current_grapple_point: GrapplePoint
-var is_grapple_setup: bool = false
 var is_grappling: bool = false
 
 var vector_to_grapple_point: Vector2
 var angle_from_grapple_point: float
 var length_to_grapple_point: float
 
-var gravity: float
 var angular_velocity: float
 var grapple_limiting_factor: float = 0.1
 
 func _ready():
 	state_machine.init(self)
-	grapple_point_detector.grapple_point_found.connect(set_grapple_point)
 
 func _physics_process(delta):
-	
-	var direction = Input.get_axis("move_left", "move_right")
-	
-	if Input.is_action_just_pressed("grapple") and current_grapple_point:
-		is_grappling = true
-		
-		vector_to_grapple_point = current_grapple_point.position - position
-		angle_from_grapple_point = atan2(vector_to_grapple_point.x, -vector_to_grapple_point.y)
-		length_to_grapple_point = vector_to_grapple_point.length()
-		
-		var tangent_to_pendulum = Vector2(cos(angle_from_grapple_point), -sin(angle_from_grapple_point))
-		gravity = 2/length_to_grapple_point
-		angular_velocity = -velocity.project(tangent_to_pendulum).length() * delta 
-	
-	if Input.is_action_just_released("grapple"):
-		is_grappling = false
-	
-	if is_grappling:
-		vector_to_grapple_point = current_grapple_point.position - position
-		angle_from_grapple_point = atan2(vector_to_grapple_point.x, -vector_to_grapple_point.y)
-		
-		var angular_acceleration = (-GRAVITY * delta * sin(angle_from_grapple_point) / length_to_grapple_point)
-		
-		
-		if sign(angle_from_grapple_point) != sign(angular_velocity):
-			angular_acceleration *= (0.9 - (0.2*direction*sign(angular_velocity)))
-		
-		angular_velocity += angular_acceleration
-		
-		
-		#angular_velocity = clampf(angular_velocity, -2, 2)
-		
-		var angle_next_frame = angle_from_grapple_point + (angular_velocity * delta) + (angular_acceleration * delta * delta / 2)
-		
-		var expected_new_position = Vector2(length_to_grapple_point * sin(angle_next_frame), -length_to_grapple_point * cos(angle_next_frame))
-		var current_velocity = -(expected_new_position - vector_to_grapple_point) / delta
-		
-		if abs(angular_velocity) <= 0.01:
-			print('max angle: ')
-			print(rad_to_deg(angle_from_grapple_point))
-			print('length of pendulum')
-			print(length_to_grapple_point)
-			print('max angular acceleration')
-			print(angular_acceleration)
-			print()
-		
-		if abs(angular_acceleration) < 0.01:
-			print('max angular velocity: ')
-			print(angular_velocity)
-			print('max velocity:')
-			print(current_velocity)
-			print()
-		
-		velocity = current_velocity
-	
-	print(velocity)
-	
 	move_and_slide()
 
 func buffer_jump() -> void:
 	jump_buffer_timer.start()
 	is_jump_buffered = true
+
+func buffer_grapple() -> void:
+	grapple_buffer_timer.start()
+	is_grapple_buffered = true
 
 func reset_coyote_time() -> void:
 	coyote_timer.start()
@@ -117,3 +67,6 @@ func _on_jump_buffer_timer_timeout():
 
 func _on_coyote_timer_timeout():
 	is_within_coyote_time = false
+
+func _on_grapple_buffer_timer_timeout():
+	is_grapple_buffered = false

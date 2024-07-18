@@ -13,7 +13,7 @@ func enter() -> void:
 	wall_jump_timer.start()
 
 func physics_update(delta):
-	super.physics_update(delta)
+	super(delta)
 	
 	if Input.is_action_just_released("jump"):
 		context.velocity.y /= 3

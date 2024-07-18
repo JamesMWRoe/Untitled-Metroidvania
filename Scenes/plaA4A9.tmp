@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://boqx25wihpb8w"]
+[gd_scene load_steps=14 format=3 uid="uid://boqx25wihpb8w"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_g8qbw"]
 [ext_resource type="Script" path="res://Scripts/Player/StateMachine.gd" id="2_kv53d"]
@@ -6,14 +6,10 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/move.gd" id="4_v3d45"]
 [ext_resource type="Script" path="res://Scripts/Player/States/jump.gd" id="5_1ih41"]
 [ext_resource type="Script" path="res://Scripts/Player/States/fall.gd" id="6_0pohs"]
-[ext_resource type="Script" path="res://Scripts/Player/States/grapple_swing.gd" id="7_viidy"]
+[ext_resource type="Script" path="res://Scripts/Player/States/grapple.gd" id="7_viidy"]
 [ext_resource type="Script" path="res://Scripts/Player/States/wall_slide.gd" id="8_np4u6"]
-[ext_resource type="Script" path="res://Scripts/Player/States/grapple_fall.gd" id="8_vy1f7"]
 [ext_resource type="Script" path="res://Scripts/Player/States/wall_jump.gd" id="9_agm6g"]
-[ext_resource type="Script" path="res://Scripts/Player/States/grapple_jump.gd" id="10_sn2rv"]
 [ext_resource type="Script" path="res://Scripts/Player/grapple_detector.gd" id="10_ujae6"]
-[ext_resource type="Script" path="res://Scripts/Player/States/attack.gd" id="12_vh773"]
-[ext_resource type="Script" path="res://Scripts/Player/grapple_renderer.gd" id="13_vycyf"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_651q5"]
 
@@ -21,7 +17,7 @@
 size = Vector2(1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mbx3b"]
-radius = 65.0
+radius = 102.005
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g8qbw")
@@ -33,6 +29,14 @@ mesh = SubResource("BoxMesh_651q5")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_1eten")
+
+[node name="JumpBufferTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_kv53d")
@@ -50,58 +54,33 @@ idle = NodePath("../Idle")
 jump = NodePath("../Jump")
 fall = NodePath("../Fall")
 
-[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "grapple")]
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle")]
 script = ExtResource("5_1ih41")
 fall = NodePath("../Fall")
 idle = NodePath("../Idle")
-grapple = NodePath("../GrappleFall")
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("wall_slide", "idle", "grapple")]
 script = ExtResource("6_0pohs")
 wall_slide = NodePath("../WallSlide")
 idle = NodePath("../Idle")
-grapple = NodePath("../GrappleFall")
+grapple = NodePath("../Grapple")
 
-[node name="GrappleSwing" type="Node" parent="StateMachine" node_paths=PackedStringArray("grapple_jump", "idle")]
+[node name="Grapple" type="Node" parent="StateMachine"]
 script = ExtResource("7_viidy")
-grapple_jump = NodePath("../GrappleJump")
-idle = NodePath("../Idle")
-
-[node name="GrappleFall" type="Node" parent="StateMachine" node_paths=PackedStringArray("grapple", "fall")]
-script = ExtResource("8_vy1f7")
-grapple = NodePath("../GrappleSwing")
-fall = NodePath("../Fall")
-
-[node name="GrappleJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "wall_slide", "idle", "grapple")]
-script = ExtResource("10_sn2rv")
-fall = NodePath("../Fall")
-wall_slide = NodePath("../WallSlide")
-idle = NodePath("../Idle")
-grapple = NodePath("../GrappleFall")
 
 [node name="WallSlide" type="Node" parent="StateMachine" node_paths=PackedStringArray("wall_jump", "fall")]
 script = ExtResource("8_np4u6")
 wall_jump = NodePath("../WallJump")
 fall = NodePath("../Fall")
 
-[node name="BufferTimer" type="Timer" parent="StateMachine/WallSlide"]
-wait_time = 0.1
-one_shot = true
-
-[node name="WallJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "grapple")]
+[node name="WallJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle")]
 script = ExtResource("9_agm6g")
 fall = NodePath("../Fall")
 idle = NodePath("../Idle")
-grapple = NodePath("../GrappleFall")
 
 [node name="WallJumpTimer" type="Timer" parent="StateMachine/WallJump"]
 wait_time = 0.2
 one_shot = true
-
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("12_vh773")
-
-[node name="AttackTimer" type="Timer" parent="StateMachine/Attack"]
 
 [node name="GrappleDetector" type="Area2D" parent="."]
 script = ExtResource("10_ujae6")
@@ -109,28 +88,7 @@ script = ExtResource("10_ujae6")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GrappleDetector"]
 shape = SubResource("CircleShape2D_mbx3b")
 
-[node name="GrappleLine" type="Line2D" parent="."]
-width = 1.0
-
-[node name="Timers" type="Node" parent="."]
-
-[node name="JumpBufferTimer" type="Timer" parent="Timers"]
-wait_time = 0.2
-one_shot = true
-
-[node name="CoyoteTimer" type="Timer" parent="Timers"]
-wait_time = 0.1
-one_shot = true
-
-[node name="GrappleBufferTimer" type="Timer" parent="Timers"]
-wait_time = 0.2
-one_shot = true
-
-[node name="GrappleRenderer" type="Node2D" parent="."]
-script = ExtResource("13_vycyf")
-
-[connection signal="timeout" from="StateMachine/WallSlide/BufferTimer" to="StateMachine/WallSlide" method="_on_buffer_timer_timeout"]
+[connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
+[connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="StateMachine/WallJump/WallJumpTimer" to="StateMachine/WallJump" method="_on_wall_jump_timer_timeout"]
-[connection signal="timeout" from="Timers/JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
-[connection signal="timeout" from="Timers/CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
-[connection signal="timeout" from="Timers/GrappleBufferTimer" to="." method="_on_grapple_buffer_timer_timeout"]
+[connection signal="area_entered" from="GrappleDetector" to="GrappleDetector" method="_on_area_entered"]

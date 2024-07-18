@@ -1,23 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://cdlyel4l1h0fd"]
+[gd_scene load_steps=4 format=3 uid="uid://cdlyel4l1h0fd"]
 
 [ext_resource type="Script" path="res://Scripts/grapple_point.gd" id="1_ivhkd"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_315ap"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vsq4e"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_hcmk6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8psqj"]
-radius = 64.0
+radius = 2.0
 
 [node name="GrapplePoint" type="Area2D"]
 script = ExtResource("1_ivhkd")
-
-[node name="MeshInstance2D2" type="MeshInstance2D" parent="."]
-scale = Vector2(128, 128)
-mesh = SubResource("SphereMesh_315ap")
-texture = SubResource("PlaceholderTexture2D_vsq4e")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 scale = Vector2(4, 4)
@@ -25,6 +16,3 @@ mesh = SubResource("SphereMesh_hcmk6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8psqj")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -7,10 +7,10 @@ var jump: State
 var fall: State
 
 func physics_update(delta) -> void:
-	check_for_transition()
+	super(delta)
 	context.reset_coyote_time()
 
-func check_for_transition() -> void:
+func _check_for_state_transition() -> void:
 	if Input.is_action_just_pressed("jump"):
 		state_machine.transition_to_state(jump)
 	
