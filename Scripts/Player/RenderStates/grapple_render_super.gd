@@ -1,15 +1,13 @@
-extends Node
-class_name State
+extends Node2D
+class_name RenderState
 
 var context: Player
 var state_machine: StateMachine
 
-var animation_name: String = "idle"
-
 @export var is_active: bool = true
 
 func enter() -> void:
-	context.player_sprite_renderer.play(animation_name)
+	pass
 
 func update(delta) -> void:
 	pass
@@ -21,4 +19,7 @@ func exit() -> void:
 	pass
 
 func _check_for_state_transition() -> void:
+	pass
+
+func render():
 	pass

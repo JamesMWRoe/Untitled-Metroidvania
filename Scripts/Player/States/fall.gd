@@ -3,13 +3,16 @@ extends AerialState
 @export
 var wall_slide: State
 
-var direction
+func enter() -> void:
+	self.animation_name = "falling"
+	super()
 
 func physics_update(delta):
-	super(delta)
 	
 	direction = Input.get_axis("move_left", "move_right")
 	context.velocity.x = direction * context.MAX_RUN_SPEED
+	
+	super(delta)
 
 func _check_for_state_transition() -> void:
 	super()

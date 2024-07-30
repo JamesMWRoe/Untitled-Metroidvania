@@ -13,6 +13,8 @@ var wall_slide_velocity = 20
 var direction
 
 func enter() -> void:
+	self.animation_name = "sliding"
+	super()
 	context.velocity.y = wall_slide_velocity
 
 func physics_update(delta) -> void:

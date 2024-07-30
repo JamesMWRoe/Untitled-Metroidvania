@@ -6,9 +6,12 @@ var fall: State
 @onready var wall_jump_timer: Timer = $WallJumpTimer
 
 func enter() -> void:
+	self.animation_name = "jumping"
+	super()
 	context.velocity.y += context.JUMP_VELOCITY
-	var jump_direction = sign(context.get_wall_normal().x)
-	context.velocity.x = jump_direction * 50
+	direction = sign(context.get_wall_normal().x)
+	
+	context.velocity.x = direction * 50
 	
 	wall_jump_timer.start()
 

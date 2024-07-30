@@ -16,6 +16,9 @@ func _ready():
 
 func _physics_process(delta) -> void:
 	
+	if not player.current_grapple_point == null and player.is_grappling:
+		return
+	
 	grapple_points_within_range = []
 	
 	for area in get_overlapping_areas():

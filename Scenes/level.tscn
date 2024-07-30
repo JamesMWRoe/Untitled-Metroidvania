@@ -13,14 +13,6 @@ size = Vector2(32, 4)
 
 [node name="Level" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_ms64k")]
-position = Vector2(-195, 14)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(3, 3)
-limit_bottom = 32
-limit_smoothed = true
-
 [node name="WorldBounds" type="Node" parent="."]
 
 [node name="WorldBound_Bottom" type="StaticBody2D" parent="WorldBounds"]
@@ -135,7 +127,17 @@ mesh = SubResource("BoxMesh_xrwwy")
 shape = SubResource("RectangleShape2D_k37h6")
 
 [node name="GrapplePoint" parent="Terrain" instance=ExtResource("2_d42rf")]
+z_index = -1
 position = Vector2(23, -107)
 
 [node name="GrapplePoint2" parent="Terrain" instance=ExtResource("2_d42rf")]
+z_index = -1
 position = Vector2(163, -95)
+
+[node name="Player" parent="." instance=ExtResource("1_ms64k")]
+position = Vector2(-195, 14)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(3, 3)
+limit_bottom = 32
+limit_smoothed = true

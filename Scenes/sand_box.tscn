@@ -1,0 +1,125 @@
+[gd_scene load_steps=4 format=3 uid="uid://cskvf5bgld15t"]
+
+[ext_resource type="PackedScene" uid="uid://y6ydbyt24uki" path="res://Scenes/platform.tscn" id="1_mk26m"]
+[ext_resource type="PackedScene" uid="uid://boqx25wihpb8w" path="res://Scenes/player.tscn" id="2_0vi4x"]
+[ext_resource type="PackedScene" uid="uid://cdlyel4l1h0fd" path="res://Scenes/grapple_point.tscn" id="3_4bn1y"]
+
+[node name="SandBox" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("2_0vi4x")]
+position = Vector2(-24, 0)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(3, 3)
+limit_left = -119
+limit_top = -460
+limit_right = 470
+limit_bottom = 24
+
+[node name="RoomBounds" type="Node" parent="."]
+
+[node name="Bottom" parent="RoomBounds" instance=ExtResource("1_mk26m")]
+position = Vector2(-104, 40)
+scale = Vector2(69, 5)
+
+[node name="Top" parent="RoomBounds" instance=ExtResource("1_mk26m")]
+position = Vector2(-104, -448)
+scale = Vector2(69, 5)
+
+[node name="Left" parent="RoomBounds" instance=ExtResource("1_mk26m")]
+position = Vector2(-104, 40)
+scale = Vector2(-5, 66)
+
+[node name="Right" parent="RoomBounds" instance=ExtResource("1_mk26m")]
+position = Vector2(488, 40)
+scale = Vector2(-5, 66)
+
+[node name="--STATICS--" type="Node" parent="."]
+
+[node name="Platforms" type="Node" parent="--STATICS--"]
+
+[node name="Platform" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(16, 0)
+scale = Vector2(3, 1)
+
+[node name="Platform13" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(-104, 0)
+scale = Vector2(5, 3)
+
+[node name="Platform2" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(72, -24)
+scale = Vector2(3, 2)
+
+[node name="Platform3" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(136, -32)
+scale = Vector2(3, 4)
+
+[node name="Platform4" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(328, -40)
+scale = Vector2(9, 3)
+
+[node name="Platform5" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(80, -104)
+scale = Vector2(5, 1)
+
+[node name="Platform6" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(400, -40)
+scale = Vector2(2, 19)
+
+[node name="Platform7" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(208, -224)
+scale = Vector2(2, 19)
+
+[node name="Platform8" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(256, -256)
+scale = Vector2(2, 15)
+
+[node name="Platform9" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(-72, -152)
+scale = Vector2(2, 12)
+
+[node name="Platform10" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(272, -352)
+scale = Vector2(22, 3)
+
+[node name="Platform11" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(-104, -352)
+scale = Vector2(21, 3)
+
+[node name="Platform12" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(128, -352)
+scale = Vector2(10, 3)
+
+[node name="Platform14" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(104, -248)
+scale = Vector2(11, 2)
+
+[node name="Platform15" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(176, -264)
+scale = Vector2(2, 3)
+
+[node name="Platform16" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(128, -296)
+scale = Vector2(3, 2)
+
+[node name="Platform17" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(96, -320)
+scale = Vector2(3, 2)
+
+[node name="Platform18" parent="--STATICS--/Platforms" instance=ExtResource("1_mk26m")]
+position = Vector2(64, -352)
+scale = Vector2(2, 1)
+
+[node name="GrapplePoints" type="Node" parent="--STATICS--"]
+
+[node name="GrapplePoint" parent="--STATICS--/GrapplePoints" instance=ExtResource("3_4bn1y")]
+position = Vector2(16, -168)
+
+[node name="GrapplePoint4" parent="--STATICS--/GrapplePoints" instance=ExtResource("3_4bn1y")]
+position = Vector2(16, -288)
+
+[node name="GrapplePoint2" parent="--STATICS--/GrapplePoints" instance=ExtResource("3_4bn1y")]
+position = Vector2(232, -112)
+
+[node name="GrapplePoint3" parent="--STATICS--/GrapplePoints" instance=ExtResource("3_4bn1y")]
+position = Vector2(344, -248)

@@ -1,18 +1,11 @@
-[gd_scene load_steps=49 format=3 uid="uid://boqx25wihpb8w"]
+[gd_scene load_steps=24 format=3 uid="uid://boqx25wihpb8w"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_g8qbw"]
-[ext_resource type="Texture2D" uid="uid://ccwn4bdqhhtoi" path="res://Assets/Mouse falling.png" id="2_77pgx"]
-[ext_resource type="Texture2D" uid="uid://cpgytqnrcorj4" path="res://Assets/Mouse Base.png" id="2_cg1ds"]
 [ext_resource type="Script" path="res://Scripts/Player/StateMachine.gd" id="2_kv53d"]
 [ext_resource type="Script" path="res://Scripts/Player/States/idle.gd" id="3_5tdr4"]
-[ext_resource type="Texture2D" uid="uid://crc6x8taker3l" path="res://Assets/Mouse running.png" id="3_6dj1b"]
-[ext_resource type="Texture2D" uid="uid://csh4jxj1i4lr1" path="res://Assets/Mouse jumping.png" id="4_cogtd"]
-[ext_resource type="Texture2D" uid="uid://dpsm7q1umqp5j" path="res://Assets/Needle Sword Idle.png" id="4_owt6t"]
 [ext_resource type="Script" path="res://Scripts/Player/States/move.gd" id="4_v3d45"]
 [ext_resource type="Script" path="res://Scripts/Player/States/jump.gd" id="5_1ih41"]
 [ext_resource type="Script" path="res://Scripts/Player/States/fall.gd" id="6_0pohs"]
-[ext_resource type="Texture2D" uid="uid://bbue47clap1q7" path="res://Assets/Mouse slide.png" id="6_fbfom"]
-[ext_resource type="Texture2D" uid="uid://c4133kxfkeb8d" path="res://Assets/Mouse swing.png" id="7_6da7l"]
 [ext_resource type="Script" path="res://Scripts/Player/States/grapple_swing.gd" id="7_viidy"]
 [ext_resource type="Script" path="res://Scripts/Player/States/wall_slide.gd" id="8_np4u6"]
 [ext_resource type="Script" path="res://Scripts/Player/States/grapple_fall.gd" id="8_vy1f7"]
@@ -25,163 +18,11 @@
 [ext_resource type="Script" path="res://Scripts/Player/grapple_reticle.gd" id="15_kbt2d"]
 [ext_resource type="Script" path="res://Scenes/attack_anim.gd" id="17_271tq"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_w8hfn"]
-atlas = ExtResource("2_77pgx")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jtcry"]
-atlas = ExtResource("2_cg1ds")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_00rfc"]
-atlas = ExtResource("4_cogtd")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wp6jy"]
-atlas = ExtResource("4_cogtd")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_v80tf"]
-atlas = ExtResource("4_cogtd")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wwhh7"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rhpnk"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j6t6i"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(128, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5v133"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(160, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_niopy"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(192, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wn862"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(224, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6yhv8"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6t3fx"]
-atlas = ExtResource("3_6dj1b")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dfajs"]
-atlas = ExtResource("6_fbfom")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7e50a"]
-atlas = ExtResource("7_6da7l")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_5udi0"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_w8hfn")
-}],
-"loop": true,
-"name": &"falling",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jtcry")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_00rfc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wp6jy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_v80tf")
-}],
-"loop": false,
-"name": &"jumping",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wwhh7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rhpnk")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_j6t6i")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5v133")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_niopy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wn862")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6yhv8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6t3fx")
-}],
-"loop": true,
-"name": &"running",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dfajs")
-}],
-"loop": true,
-"name": &"sliding",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7e50a")
-}],
-"loop": true,
-"name": &"swinging",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1e3fp"]
-atlas = ExtResource("4_owt6t")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_mkyhs"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1e3fp")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 5.0
-}]
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_76a6o"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2jj7"]
-size = Vector2(0.375, 1.05541)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i1jvh"]
+radius = 0.25
+height = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_y8ad8"]
 
@@ -196,30 +37,13 @@ size = Vector2(0.888889, 1.33333)
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g8qbw")
 
-[node name="PlayerAnimatedSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(1.19209e-07, 0)
-scale = Vector2(0.46875, 0.46875)
-sprite_frames = SubResource("SpriteFrames_5udi0")
-animation = &"swinging"
-autoplay = "idle"
-flip_h = true
-
-[node name="NeedleAnimatedSprite" type="AnimatedSprite2D" parent="."]
-z_index = -1
-position = Vector2(1.19209e-07, 0)
-scale = Vector2(0.46875, 0.46875)
-sprite_frames = SubResource("SpriteFrames_mkyhs")
-animation = &"Idle"
-
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
-visible = false
 scale = Vector2(8, 8)
 mesh = SubResource("CapsuleMesh_76a6o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 2.5034e-06)
-scale = Vector2(15.4, 14.2)
-shape = SubResource("RectangleShape2D_e2jj7")
+scale = Vector2(16, 16)
+shape = SubResource("CapsuleShape2D_i1jvh")
 
 [node name="Timers" type="Node" parent="."]
 
@@ -239,19 +63,17 @@ one_shot = true
 script = ExtResource("2_kv53d")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("move", "jump", "fall", "attack")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("move", "jump", "fall")]
 script = ExtResource("3_5tdr4")
 move = NodePath("../Move")
 jump = NodePath("../Jump")
 fall = NodePath("../Fall")
-attack = NodePath("../Attack")
 
-[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle", "jump", "fall", "attack")]
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle", "jump", "fall")]
 script = ExtResource("4_v3d45")
 idle = NodePath("../Idle")
 jump = NodePath("../Jump")
 fall = NodePath("../Fall")
-attack = NodePath("../Attack")
 
 [node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("fall", "idle", "grapple")]
 script = ExtResource("5_1ih41")
@@ -316,7 +138,7 @@ script = ExtResource("12_vh773")
 idle = NodePath("../Idle")
 
 [node name="AttackTimer" type="Timer" parent="StateMachine/Attack"]
-wait_time = 0.3
+wait_time = 0.5
 one_shot = true
 
 [node name="GrappleDetector" type="Area2D" parent="."]
@@ -351,9 +173,6 @@ shape = SubResource("CircleShape2D_mbx3b")
 
 [node name="GrappleRenderer" type="Node2D" parent="."]
 script = ExtResource("13_vycyf")
-
-[node name="GrappleOffset" type="Node2D" parent="GrappleRenderer"]
-position = Vector2(1.7, -5.9)
 
 [node name="Attack" type="Area2D" parent="."]
 position = Vector2(5, 0)
